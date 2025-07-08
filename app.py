@@ -3,7 +3,7 @@ import streamlit as st
 import re
 import io
 
-st.title("📊 Relatório de Contatos Tech")
+st.title("📊 Relatório de Contatos Técnicos")
 
 sheet_id = "1o8WxZootUshy8F7gFMEmmIxDGONtvGvxKjCvBJdgTEI"
 aba = "Relat%C3%B3rio%20Contatos%20Tech"
@@ -31,7 +31,6 @@ if st.button("🔍 Pesquisar"):
             "Status Notion"
         ]
 
-        # Inclui a coluna ID antes das colunas desejadas
         resultado = filtrado[["User ID Appmax"] + colunas_desejadas]
 
         st.success(f"{resultado.shape[0]} resultados encontrados:")
@@ -40,7 +39,6 @@ if st.button("🔍 Pesquisar"):
         excel_buffer = io.BytesIO()
         with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
             resultado.to_excel(writer, index=False, sheet_name='Resultados')
-            writer.save()
 
         excel_data = excel_buffer.getvalue()
 
