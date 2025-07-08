@@ -13,7 +13,6 @@ df.columns = df.columns.str.strip()
 
 ids_input = st.text_area("Cole os User ID Appmax (separados por vírgula, espaço ou enter):")
 
-# Botão pesquisar
 if st.button("🔍 Pesquisar"):
     if ids_input.strip() == "":
         st.warning("Por favor, cole os IDs para pesquisar.")
@@ -31,7 +30,8 @@ if st.button("🔍 Pesquisar"):
             "Status Notion"
         ]
 
-        resultado = filtrado[colunas_desejadas]
+        # Inclui a coluna ID antes das colunas desejadas
+        resultado = filtrado[["User ID Appmax"] + colunas_desejadas]
 
         st.success(f"{resultado.shape[0]} resultados encontrados:")
         st.dataframe(resultado, use_container_width=True)
