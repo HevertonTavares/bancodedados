@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import re
+import io
 
 st.title("📊 Relatório de Contatos Tech")
 
@@ -36,12 +37,18 @@ if st.button("🔍 Pesquisar"):
         st.success(f"{resultado.shape[0]} resultados encontrados:")
         st.dataframe(resultado, use_container_width=True)
 
-        csv = resultado.to_csv(index=False).encode("utf-8")
+        excel_buffer = io.BytesIO()
+        with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+            resultado.to_excel(writer, index=False, sheet_name='Resultados')
+            writer.save()
+
+        excel_data = excel_buffer.getvalue()
+
         st.download_button(
-            label="📥 Baixar CSV com resultados",
-            data=csv,
-            file_name="resultados_filtrados.csv",
-            mime="text/csv"
+            label="📥 Baixar Excel com resultados",
+            data=excel_data,
+            file_name="resultados_filtrados.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 else:
     st.info("Digite ou cole os User IDs acima e clique em Pesquisar para iniciar a busca.")
